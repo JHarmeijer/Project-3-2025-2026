@@ -14,13 +14,13 @@ const scenes = {
     controls: () => {
 
     },
-    1: () => {
+    level1: () => {
 
     },
-    2: () => {
+    level2: () => {
 
     },
-    3: () => {
+    level3: () => {
 
     },
     gameover: () => {
