@@ -1,0 +1,46 @@
+const player = document.getElementById("player");
+
+let x =100;
+let y= 300;
+
+let velocityY = 0;
+let gravity = 0.5;
+let jumppower =  -10;
+
+let keys = {}
+
+
+document.addEventListener("keydown", (e) => {
+  keys[e.code] = true;
+});
+
+document.addEventListener("keyup", (e) => {
+  keys[e.code] = false;
+});
+function update(){
+  if (keys["eyA"]){
+    x-=4;
+  }
+  if(keys["ArrowRight"]){
+    x+=4; 
+  }
+  if(keys["Space"] && y >= 300){
+    velocityY = jumppower;
+  }
+  // gravity
+  velocityY += gravity;
+  y += velocityY;
+
+  // ground collision
+  if(y > 300){
+    y = 300;
+    velocityY = 0;
+  }
+  player.style.left = x + "px";
+  player.style.top = y + "px";
+
+  requestAnimationFrame(update);
+}
+
+update();
+

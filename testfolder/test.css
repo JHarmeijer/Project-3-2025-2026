@@ -1,0 +1,35 @@
+body{
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  width: 2500px;
+  background:#222;
+}
+#game{
+  width:20000px;
+  height:400px;
+  background:#87CEEB;
+  position:relative;
+  overflow:hidden;
+}
+
+
+#world{
+  position: absolute;
+  ;
+}
+
+
+#player{
+  position:absolute;
+  width:50px;
+  height:50px;
+}
+
+
+#player_img{
+  width:50px;
+  height:50px;
+}
