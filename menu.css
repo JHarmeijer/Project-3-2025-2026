@@ -1,4 +1,7 @@
-
+.menu_A_tagg{
+    text-decoration: none;
+    color:white
+}
 
 /* Menu container */
 #menu_div {

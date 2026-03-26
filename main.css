@@ -20,8 +20,9 @@ body{
   position: absolute;
   ;
 }
-.block{
-  position: absolute;
+#block{
+  width: 40px;
+  height: 40px;
   background-color: #222;
 }
 
