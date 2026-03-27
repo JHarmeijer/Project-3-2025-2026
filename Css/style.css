@@ -96,3 +96,9 @@ body{
   background: #444;
   border: 2px solid #666;
 }
+
+#coords{
+  position: fixed;
+  top: 50px;
+  left: 10px;
+}
