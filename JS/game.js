@@ -12,14 +12,34 @@ const keys = {};
 const mapHeight = 2000;
 const mapWidth = 2000;
 
-//platforms inladen van de world.js
-const platformsEl = document.getElementById("platforms");
 
-const platforms = [];
 const camera = {
     x: 0,
     y: 0
 };
+
+// ── DEBUG ──────────────────────────────────────────
+const DEBUG = true; // ← zet op false om alles te verbergen
+
+if (DEBUG) {
+  const debugEl = document.createElement("div");
+  debugEl.id = "debug";
+  document.body.appendChild(debugEl);
+
+  document.addEventListener("mousemove", (e) => {
+    // muis positie in de wereld (inclusief camera verschuiving)
+    const wereldX = Math.round(e.clientX + camera.x);
+    const wereldY = Math.round(e.clientY);
+
+    debugEl.innerHTML = `
+      scherm X: ${e.clientX} <br>
+      scherm Y: ${e.clientY} <br>
+      wereld X: ${wereldX}  <br>
+      wereld Y: ${wereldY}  <br>
+    `;
+  });
+}
+// ── EINDE DEBUG ────────────────────────────────────
 
 const player = {
   x:200,
@@ -71,26 +91,7 @@ document.addEventListener("keydown", e =>{
     }
 })
 
-function spawnPlatforms() {
-  level.platforms.forEach(p => {
-    const el = document.createElement("div");
-    el.classList.add("platform");
 
-    el.style.left = p.x + "px";
-    el.style.top = p.y + "px";
-    el.style.width = p.w + "px";
-    el.style.height = p.h + "px";
-
-    platformsEl.appendChild(el);
-
-    platforms.push({
-      x: p.x,
-      y: p.y,
-      w: p.w,
-      h: p.h
-    });
-  });
-}
 
 function attack() {
   if (!player.canAttack) return;
@@ -363,28 +364,7 @@ function updateLoot() {
   }
 }
 
-// ── DEBUG ──────────────────────────────────────────
-const DEBUG = true; // ← zet op false om alles te verbergen
 
-if (DEBUG) {
-  const debugEl = document.createElement("div");
-  debugEl.id = "debug";
-  document.body.appendChild(debugEl);
-
-  document.addEventListener("mousemove", (e) => {
-    // muis positie in de wereld (inclusief camera verschuiving)
-    const wereldX = Math.round(e.clientX + camera.x);
-    const wereldY = Math.round(e.clientY);
-
-    debugEl.innerHTML = `
-      scherm X: ${e.clientX} <br>
-      scherm Y: ${e.clientY} <br>
-      wereld X: ${wereldX}  <br>
-      wereld Y: ${wereldY}  <br>
-    `;
-  });
-}
-// ── EINDE DEBUG ────────────────────────────────────
 
 function update(){
 
