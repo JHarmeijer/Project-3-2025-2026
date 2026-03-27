@@ -363,6 +363,29 @@ function updateLoot() {
   }
 }
 
+// ── DEBUG ──────────────────────────────────────────
+const DEBUG = true; // ← zet op false om alles te verbergen
+
+if (DEBUG) {
+  const debugEl = document.createElement("div");
+  debugEl.id = "debug";
+  document.body.appendChild(debugEl);
+
+  document.addEventListener("mousemove", (e) => {
+    // muis positie in de wereld (inclusief camera verschuiving)
+    const wereldX = Math.round(e.clientX + camera.x);
+    const wereldY = Math.round(e.clientY);
+
+    debugEl.innerHTML = `
+      scherm X: ${e.clientX} <br>
+      scherm Y: ${e.clientY} <br>
+      wereld X: ${wereldX}  <br>
+      wereld Y: ${wereldY}  <br>
+    `;
+  });
+}
+// ── EINDE DEBUG ────────────────────────────────────
+
 function update(){
 
   move();

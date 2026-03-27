@@ -1,3 +1,20 @@
+/* ── DEBUG ── verwijder samen met JS debug code ── */
+#debug {
+  position: fixed;    /* blijft op scherm, beweegt niet mee met camera */
+  top: 30px;
+  left: 30px;
+  background: rgba(0, 0, 0, 0.6);
+  color: lime;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  z-index: 9999;      /* altijd bovenop alles */
+  pointer-events: none; /* kliks gaan erdoorheen, blokkeert niets */
+}
+/* ── EINDE DEBUG ── delete als klaar */
+
+
 body{
   margin:0;
   overflow:hidden;
