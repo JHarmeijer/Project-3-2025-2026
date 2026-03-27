@@ -8,6 +8,7 @@ const playerHPText = document.getElementById("playerHP");
 const enemyHPText = document.getElementById("enemyHP");
 
 const keys = {};
+const prevKeys = {};
 
 const mapHeight = 2000;
 const mapWidth = 2000;
@@ -16,6 +17,7 @@ const mapWidth = 2000;
 const platformsEl = document.getElementById("platforms");
 
 const platforms = [];
+const enemies = [];
 const camera = {
     x: 0,
     y: 0
@@ -42,16 +44,7 @@ const player = {
   alive: true
 };
 
-const enemy = {
-  x:500,
-  y:200,
-  speed:2,
-  speedy:0,
-  gravity:0.5,
-  jumpPower:-10,
-  hp:50,
-  alive: true
-};
+
 
 const swordOffset = { x: 40, y: -10 };
 
@@ -71,6 +64,7 @@ document.addEventListener("keydown", e =>{
     }
 })
 
+//platforms spawnen
 function spawnPlatforms() {
   level.platforms.forEach(p => {
     const el = document.createElement("div");
@@ -82,12 +76,51 @@ function spawnPlatforms() {
     el.style.height = p.h + "px";
 
     platformsEl.appendChild(el);
+    platforms.push(p);
+  });
+}
 
-    platforms.push({
-      x: p.x,
-      y: p.y,
-      w: p.w,
-      h: p.h
+//collision
+function checkPlatformCollision(entity) {
+  let onGround = false;
+
+  platforms.forEach(p => {
+
+    const withinX =
+      entity.x + 40 > p.x &&
+      entity.x < p.x + p.w;
+
+    const falling = entity.speedy >= 0;
+
+    const touchingTop =
+      entity.y + 40 >= p.y &&
+      entity.y + 40 <= p.y + p.h;
+
+    if (withinX && falling && touchingTop) {
+      entity.y = p.y - 40;
+      entity.speedy = 0;
+      onGround = true;
+    }
+  });
+
+  return onGround;
+}
+
+function spawnEnemies() {
+  level.enemies.forEach(e => {
+    const el = document.createElement("div");
+    el.classList.add("enemy");
+
+    world.appendChild(el);
+
+    enemies.push({
+      x: e.x,
+      y: e.y,
+      speedy: 0,
+      gravity: 0.5,
+      hp: 50,
+      alive: true,
+      el: el
     });
   });
 }
@@ -125,58 +158,58 @@ function attack() {
 
 function checkHit() {
 
-  if (!enemy.alive || !player.alive) return;
+  if (!player.alive) return;
 
   let swordX;
   let swordY = player.y + swordOffset.y;
 
   if (player.facing === 1) {
-    // attacking right
     swordX = player.x + swordOffset.x;
   } else {
-    // attacking left
     swordX = player.x - swordOffset.x;
   }
 
   const swordRect = {
     x: swordX,
     y: swordY,
-    w: 60,   // wider hitbox so distance attacks work
+    w: 60,
     h: 40
   };
 
-  const enemyRect = {
-    x: enemy.x,
-    y: enemy.y,
-    w: enemyEl.offsetWidth,
-    h: enemyEl.offsetHeight
-  };
+  enemies.forEach(enemy => {
 
-  if (
-    swordRect.x < enemyRect.x + enemyRect.w &&
-    swordRect.x + swordRect.w > enemyRect.x &&
-    swordRect.y < enemyRect.y + enemyRect.h &&
-    swordRect.y + swordRect.h > enemyRect.y
-  ) {
+    if (!enemy.alive) return;
 
-    enemy.hp -= player.damage;
-    enemyHPText.textContent = enemy.hp;
+    const enemyRect = {
+      x: enemy.x,
+      y: enemy.y,
+      w: enemy.el.offsetWidth,
+      h: enemy.el.offsetHeight
+    };
 
-    spawnHit(enemy.x + 20, enemy.y + 20);
+    if (
+      swordRect.x < enemyRect.x + enemyRect.w &&
+      swordRect.x + swordRect.w > enemyRect.x &&
+      swordRect.y < enemyRect.y + enemyRect.h &&
+      swordRect.y + swordRect.h > enemyRect.y
+    ) {
 
-    if (enemy.hp <= 0) {
-      enemy.alive = false;
+      // ✅ DAMAGE
+      enemy.hp -= player.damage;
 
-      //particles
-      spawnDeathParticles(enemy.x + 20, enemy.y + 20);
+      spawnHit(enemy.x + 20, enemy.y + 20);
 
-      //loot
-      spawnLoot(enemy.x + 20, enemy.y + 20)
-      enemyEl.style.display = "none";
+      if (enemy.hp <= 0) {
+        enemy.alive = false;
+
+        spawnDeathParticles(enemy.x + 20, enemy.y + 20);
+        spawnLoot(enemy.x + 20, enemy.y + 20);
+
+        enemy.el.style.display = "none";
+      }
     }
-  }
+  });
 }
-
 function dash() {
   if (!player.canDash || !player.alive) return;
 
@@ -265,7 +298,7 @@ function spawnLoot(x, y) {
 
 
 function move() {
-  if (keys[" "] && player.y >= 300) {
+  if (keys[" "] && !prevKeys[" "] && player.speedy === 0) {
     player.speedy = player.jumpPower;
   }
 
@@ -284,28 +317,38 @@ function move() {
 }
 
 function enemyAI(){
+  enemies.forEach(enemy => {
 
-  if(!enemy.alive) return;
-  if (!player.alive) return;
+    if(!enemy.alive || !player.alive) return;
 
-  const dx = player.x - enemy.x;
-  const dy = player.y - enemy.y;
+    const dx = player.x - enemy.x;
+    const dy = player.y - enemy.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
 
-  const dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist < 200){
+      enemy.x += dx * 0.01;
+      enemy.y += dy * 0.01;
+    }
 
-  if(dist < 200){
-    enemy.x += dx * 0.01;
-    enemy.y += dy * 0.01;
-  }
+    if(dist < 40){
+      player.hp -= 0.1;
+      playerHPText.textContent = Math.floor(player.hp);
 
-  if(dist < 40){
-    player.hp -= 0.1;
-    playerHPText.textContent = Math.floor(player.hp);
-    if(player.hp <= 0){
+      if(player.hp <= 0){
         player.alive = false;
         playerEl.style.display = "none";
+      }
     }
-  }
+
+    // gravity
+    enemy.speedy += enemy.gravity;
+    enemy.y += enemy.speedy;
+
+    checkPlatformCollision(enemy);
+
+    enemy.el.style.left = enemy.x + "px";
+    enemy.el.style.top = enemy.y + "px";
+  });
 }
 
 function updateCamera(){
@@ -373,24 +416,17 @@ function update(){
   playerEl.style.left = player.x + "px";
   playerEl.style.top = player.y + "px";
 
-  enemyEl.style.left = enemy.x + "px";
-  enemyEl.style.top = enemy.y + "px";
+
 
   //Zwaartekracht
   player.speedy += player.gravity;
   player.y += player.speedy;
-  enemy.speedy += enemy.gravity;
-  enemy.y += enemy.speedy;
+
 
   //Ground Collission
-  if(player.y > 300){
-    player.y = 300;
-    player.speedy = 0;
-  }
-  if(enemy.y > 300){
-    enemy.y = 300;
-    enemy.speedy = 0;
-  }
+  checkPlatformCollision(player);
+
+  Object.assign(prevKeys, keys);
 
   //Dashing
   if (player.dashing) {
@@ -400,5 +436,6 @@ function update(){
 
   requestAnimationFrame(update);
 }
-
+spawnEnemies();
+spawnPlatforms();
 update();

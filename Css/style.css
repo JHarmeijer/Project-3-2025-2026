@@ -29,7 +29,7 @@ body{
 .sword{
   position:absolute;
   width:60px;
-  
+  background-size: contain;
   transform-origin:left center;
 }
 
