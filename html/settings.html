@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Sigma Spectre</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      margin-bottom: 3rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    }
+    .slider-container {
+      width: 300px;
+      margin-bottom: 2rem;
+    }
+    .slider-label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    input[type=range] {
+      width: 100%;
+    }
+    button {
+      width: 200px;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Settings</h1>
+
+  <div class="slider-container">
+    <div class="slider-label">Volume: <span id="volumeValue">50</span>%</div>
+    <input type="range" min="0" max="100" value="50" id="volumeSlider">
+  </div>
+
+  <button class="btn btn-primary" onclick="goBack()">Back to Start</button>
+
+  <script>
+    const volumeSlider = document.getElementById("volumeSlider");
+    const volumeValue = document.getElementById("volumeValue");
+
+    // Laad opgeslagen volume uit localStorage
+    const savedVolume = localStorage.getItem("gameVolume");
+    if(savedVolume !== null){
+      volumeSlider.value = savedVolume;
+      volumeValue.textContent = savedVolume;
+    }
+
+    // Update volume in real-time
+    volumeSlider.addEventListener("input", () => {
+      const vol = volumeSlider.value;
+      volumeValue.textContent = vol;
+      localStorage.setItem("gameVolume", vol);
+    });
+
+    function goBack(){
+      window.location.href = "index.html";
+    }
+  </script>
+  <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
+
+</body>
+</html>

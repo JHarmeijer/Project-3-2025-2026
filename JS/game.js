@@ -455,6 +455,7 @@ function update(){
 
   requestAnimationFrame(update);
 }
+
 spawnEnemies();
 spawnPlatforms();
 update();
