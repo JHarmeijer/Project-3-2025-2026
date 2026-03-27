@@ -10,6 +10,7 @@ const enemyHPText = document.getElementById("enemyHP");
 const keys = {};
 const prevKeys = {};
 
+//map grootte
 const mapHeight = 2000;
 const mapWidth = 2000;
 
@@ -84,20 +85,24 @@ function spawnPlatforms() {
 function checkPlatformCollision(entity) {
   let onGround = false;
 
+  // bepaal hoogte van entity
+  const height = entity.isBoss ? 80 : 40;
+
   platforms.forEach(p => {
+    const width = entity.isBoss ? 80 : 40; // breedte van entity
 
     const withinX =
-      entity.x + 40 > p.x &&
+      entity.x + width > p.x &&
       entity.x < p.x + p.w;
 
     const falling = entity.speedy >= 0;
 
     const touchingTop =
-      entity.y + 40 >= p.y &&
-      entity.y + 40 <= p.y + p.h;
+      entity.y + height >= p.y &&
+      entity.y + height <= p.y + p.h;
 
     if (withinX && falling && touchingTop) {
-      entity.y = p.y - 40;
+      entity.y = p.y - height;
       entity.speedy = 0;
       onGround = true;
     }
@@ -111,6 +116,14 @@ function spawnEnemies() {
     const el = document.createElement("div");
     el.classList.add("enemy");
 
+    // speciale styling voor boss
+    if(e.isBoss){
+      el.style.background = "purple";
+      el.style.width = "80px";
+      el.style.height = "80px";
+      
+    }
+
     world.appendChild(el);
 
     enemies.push({
@@ -118,8 +131,9 @@ function spawnEnemies() {
       y: e.y,
       speedy: 0,
       gravity: 0.5,
-      hp: 50,
+      hp: e.hp || 50,
       alive: true,
+      isBoss: e.isBoss || false,
       el: el
     });
   });
@@ -210,6 +224,7 @@ function checkHit() {
     }
   });
 }
+
 function dash() {
   if (!player.canDash || !player.alive) return;
 
@@ -318,32 +333,36 @@ function move() {
 
 function enemyAI(){
   enemies.forEach(enemy => {
-
     if(!enemy.alive || !player.alive) return;
 
-    const dx = player.x - enemy.x;
-    const dy = player.y - enemy.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-
-    if(dist < 200){
-      enemy.x += dx * 0.01;
-      enemy.y += dy * 0.01;
+    if(enemy.isBoss){
+      // Boss beweegt heen en weer
+      enemy.x += Math.sin(Date.now()*0.002)*1.5;
+    } else {
+      // Normale vijand AI
+      const dx = player.x - enemy.x;
+      const dy = player.y - enemy.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 200){
+        enemy.x += dx * 0.01;
+        enemy.y += dy * 0.01;
+      }
     }
 
-    if(dist < 40){
-      player.hp -= 0.1;
+    // Aanraken speler
+    const distToPlayer = Math.sqrt((player.x - enemy.x)**2 + (player.y - enemy.y)**2);
+    if(distToPlayer < 40){
+      player.hp -= enemy.isBoss ? 0.3 : 0.1; // boss doet meer damage
       playerHPText.textContent = Math.floor(player.hp);
-
       if(player.hp <= 0){
         player.alive = false;
         playerEl.style.display = "none";
       }
     }
 
-    // gravity
+    // Gravity
     enemy.speedy += enemy.gravity;
     enemy.y += enemy.speedy;
-
     checkPlatformCollision(enemy);
 
     enemy.el.style.left = enemy.x + "px";
