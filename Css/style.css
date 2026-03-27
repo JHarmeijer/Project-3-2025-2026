@@ -1,0 +1,98 @@
+body{
+  margin:0;
+  overflow:hidden;
+  background:#111;
+  color:white;
+  font-family:Arial;
+}
+
+#ui{
+  position:absolute;
+  top:10px;
+  left:10px;
+}
+
+.player{
+  position:absolute;
+  width:40px;
+  height:40px;
+  background:steelblue;
+}
+
+.enemy{
+  position:absolute;
+  width:40px;
+  height:40px;
+  background:crimson;
+}
+
+.sword{
+  position:absolute;
+  width:60px;
+  
+  transform-origin:left center;
+}
+
+#world {
+    position: absolute;
+    width: 2000px;
+    height: 2000px;
+    background: #38d4ff;
+}
+
+.hit{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: yellow;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: hitAnim 0.3s forwards;
+}
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #8be9ff;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 1;
+  box-shadow: 0 0 6px #8be9ff;
+  animation: particleFade 0.8s forwards;
+}
+
+.loot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #bdefff, #4fdfff);
+  box-shadow: 0 0 8px #4fdfff;
+  pointer-events: none;
+  transition: transform 0.2s, box-shadow 0.1s;
+}
+@keyframes particleFade {
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes hitAnim {
+    from{
+        transition: scale(1);
+        opacity: 1;
+    }
+    to{
+        transform: scale(3);
+        opacity: 3;
+    }
+}
+
+
+/* Level design: Platforms*/
+.platforms {
+  position: absolute;
+  background: #444;
+  border: 2px solid #666;
+}
