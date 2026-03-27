@@ -327,7 +327,7 @@ function updateLoot() {
     const dy = playerCenterY - loot.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
 
-    // 🧲 MAGNET RANGE
+    //  MAGNET RANGE
     const magnetRange = 100;
 
     if (dist < magnetRange) {
@@ -342,7 +342,7 @@ function updateLoot() {
       loot.y += dirY * speed;
     }
 
-    // 🎯 pickup radius
+    //  pickup radius
     if (dist < 30) {
       player.hp += loot.value;
       playerHPText.textContent = Math.floor(player.hp);
