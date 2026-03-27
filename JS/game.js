@@ -49,7 +49,7 @@ const player = {
   speedy:0,
   gravity:0.5,
   jumpPower:-10,
-  hp:100,
+  hp:10,
   damage:10,
   cooldown:400,
   canAttack:true,
@@ -59,7 +59,8 @@ const player = {
   dashVelocity:0,
   dashCooldown:800,
   canDash:true,
-  alive: true
+  alive: true,
+  canMove: true
 };
 
 const enemy = {
@@ -266,17 +267,17 @@ function spawnLoot(x, y) {
 
 
 function move() {
-  if (keys[" "] && player.y >= 300) {
+  if (keys[" "] && player.y >= 300 && player.canMove == true) {
     player.speedy = player.jumpPower;
   }
 
   if (!player.dashing) {
-    if (keys["a"]) {
+    if (keys["a"] && player.canMove == true) {
       player.x -= player.speedx;
       player.facing = -1;
       playerEl.style.transform = "scaleX(-1)";
     }
-    if (keys["d"]) {
+    if (keys["d"] && player.canMove == true) {
       player.x += player.speedx;
       player.facing = 1;
       playerEl.style.transform = "scaleX(1)";
@@ -305,6 +306,21 @@ function enemyAI(){
     if(player.hp <= 0){
         player.alive = false;
         playerEl.style.display = "none";
+        player.canMove = false;
+        player.canAttack = false;
+
+          /*deathScreen*/
+        const container =document.getElementById('deatScreen');
+        container.innerHTML = "";
+
+        
+        const kaart = document.createElement('div');
+        kaart.className='TheDeathScreen'
+
+        kaart.innerHTML = `
+        <h1>je bent gestorven</h1>
+        `
+        container.appendChild(kaart)
     }
   }
 }
