@@ -1,3 +1,21 @@
+// Achtergrondmuziek aanmaken
+const bgMusic = new Audio('../Assets/SoundHelix-Song-1.mp3'); // pad naar je muziekbestand
+bgMusic.loop = true;
+
+// Laad volume uit localStorage of default 0.5
+const savedVolume = localStorage.getItem("gameVolume");
+bgMusic.volume = savedVolume !== null ? savedVolume / 100 : 0.5;
+
+// Start muziek automatisch
+bgMusic.play().catch(e => console.log("Autoplay blocked, klik ergens om te starten"));
+
+// Optioneel: update volume dynamisch bij aanpassing
+window.addEventListener("storage", (e) => {
+  if(e.key === "gameVolume"){
+    bgMusic.volume = e.newValue / 100;
+  }
+});
+
 const loots = [];
 
 const world = document.getElementById("world")
