@@ -319,6 +319,7 @@ function enemyAI(){
 
         kaart.innerHTML = `
         <h1>je bent gestorven</h1>
+        <button><a href="../html/home.html">exit</a></button>
         `
         container.appendChild(kaart)
     }
