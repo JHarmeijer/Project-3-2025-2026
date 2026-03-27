@@ -1,16 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-<link rel="stylesheet" href="menu.css" type="text/css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sigma Spectre - Start</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0d0d0d, #2b2b2b);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .container {
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-shadow: 3px 3px 10px rgba(0,0,0,0.7);
+    }
+
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    }
+
+    .btn-menu {
+      font-size: 1.5rem;
+      padding: 0.75rem 3rem;
+      margin: 0.5rem 0;
+      width: 250px;
+      border-radius: 50px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-menu:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+    }
+
+    .ghost-img {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 300px;
+      opacity: 0.8;
+      animation: float 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
 </head>
-
-
 <body>
-<div id="menu_div">
-    <button id="play_button" class="menu_button"><a class="menu_A_tagg" href="levels.html">play</a></button>
-    <button id=" settings_button" class="menu_button">settings</button>
-    <button id="quit_button" class="menu_button">quit</button>
-</div>
+
+  <div class="container">
+    <h1>Sigma Spectre</h1>
+    <p>Stap in de wereld van geesten en strijd om te overleven!</p>
+    <div class="d-flex flex-column align-items-center">
+      <a href="levels.html" class="btn btn-primary btn-menu">Play</a>
+      <button class="btn btn-secondary btn-menu" onclick="openSettings()">Settings</button>
+      <button class="btn btn-danger btn-menu" onclick="quitGame()">Quit</button>
+    </div>
+  </div>
+
+  <img class="ghost-img" src="../Assets/Ghost.png" alt="Ghost">
+
+  <script>
+    function openSettings() {
+      alert("Settings menu coming soon!");
+    }
+    function quitGame(){
+      alert("Sluit de website af stupid ahh mfer");
+    }
+</script>
+
 </body>
 </html>
