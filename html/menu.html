@@ -58,11 +58,18 @@
       animation: float 3s ease-in-out infinite;
       z-index: 1;
     }
+    
+    .fall {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
     }
+
   </style>
 </head>
 <body>
@@ -83,9 +90,20 @@
     function openSettings() {
       alert("Settings menu coming soon!");
     }
-    function quitGame(){
-      alert("Sluit de website af stupid ahh mfer");
+
+ 
+
+    function quitGame() {
+      const elements = document.querySelectorAll("body *");
+    
+      elements.forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.add("fall");
+        }, i * 50); // kleine vertraging voor "kettingreactie"
+      });
     }
+
+
 </script>
 
 </body>
