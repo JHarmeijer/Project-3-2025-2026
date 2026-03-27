@@ -9,10 +9,11 @@ const deadZone = 450;
 // level/platforms
 const blocks = [
   { x: 0, y: 350, w: 2000, h: 50 },   // grond
-  { x: 300, y: 280, w: 100, h: 20 },
+
   { x: 500, y: 240, w: 100, h: 20 },
   { x: 700, y: 200, w: 100, h: 20 },
-  { x: 1000, y: 300, w: 150, h: 20 }
+  { x: 1000, y: 300, w: 150, h: 20 },
+  { x:240, y: 250, w: 100, h:20 }
 ];
 
 // player object
@@ -28,6 +29,30 @@ const player = {
   gravity: 0.5,
   alive: true
 };
+
+// ── DEBUG ──────────────────────────────────────────
+const DEBUG = true; // ← zet op false om alles te verbergen
+
+if (DEBUG) {
+  const debugEl = document.createElement("div");
+  debugEl.id = "debug";
+  document.body.appendChild(debugEl);
+
+  document.addEventListener("mousemove", (e) => {
+    // muis positie in de wereld (inclusief camera verschuiving)
+    const wereldX = Math.round(e.clientX + camera.x);
+    const wereldY = Math.round(e.clientY);
+
+    debugEl.innerHTML = `
+      scherm X: ${e.clientX} <br>
+      scherm Y: ${e.clientY} <br>
+      wereld X: ${wereldX}  <br>
+      wereld Y: ${wereldY}  <br>
+    `;
+  });
+}
+// ── EINDE DEBUG ────────────────────────────────────
+
 
 // globale onGround variabele
 let onGround = false;
