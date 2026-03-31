@@ -11,15 +11,23 @@
     Aura: <span id="playerHP">100</span>
   </div>
 
-  <div id="world">
-    <div id="player" class="player"></div>
-    <div>
-        <img id="sword" class="sword" style="display: none;" src="../Assets/Sword-pixel.png">
-    </div>
-    <div id="platforms"></div>
-    <div id="end"></div>
+<div id="world">
+  <div id="player" class="player"></div>
+  <div>
+    <img id="sword" class="sword" style="display: none;" src="../Assets/Sword-pixel.png">
   </div>
+  <div id="platforms"></div>
+  <div id="end"></div>
+</div>
 
+<!-- ✅ WINSCREEN HIER NAAR BUITEN -->
+<div id="winScreen" class="hidden">
+  <div class="win-box">
+    <h1 id="winText">You Win!</h1>
+    <button onclick="goToMenu()">Terug naar menu</button>
+    <button onclick="restartLevel()">Opnieuw spelen</button>
+  </div>
+</div>
   <!-- Background muziek -->
   <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
 

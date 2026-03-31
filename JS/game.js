@@ -42,6 +42,8 @@ const camera = {
     y: 0
 };
 
+let gameEnded = false;
+
 const player = {
   x:200,
   y:200,
@@ -463,10 +465,24 @@ function updateLoot() {
 }
 
 function endGame(message) {
-  alert(message);
+  if (gameEnded) return;
+  gameEnded = true;
 
-  // terug naar level menu
+  player.alive = false;
+
+  const winScreen = document.getElementById("winScreen");
+  const winText = document.getElementById("winText");
+
+  winText.textContent = message;
+  winScreen.classList.remove("hidden");
+}
+
+function goToMenu() {
   window.location.href = "levels.html";
+}
+
+function restartLevel() {
+  location.reload();
 }
 
 function checkWinCondition() {
@@ -474,12 +490,12 @@ function checkWinCondition() {
   const bossAlive = enemies.some(e => e.isBoss && e.alive);
 
   if (!bossAlive && level === level3) {
-    endGame("Boss verslagen! 🎉");
+    endGame("Boss verslagen! ");
   }
 
   // Normale levels → alles killen + einde bereiken
   if (areAllEnemiesDead() && isPlayerAtEnd() && level !== level3) {
-    endGame("Level gehaald! 🎉");
+    endGame("Level gehaald!");
   }
 }
 

@@ -35,9 +35,9 @@ body{
 
 #world {
     position: absolute;
-    width: 2000px;
+    width: 3000px;
     height: 2000px;
-    background: #38d4ff;
+    background: #9c25dcae;
 }
 
 #end {
@@ -80,6 +80,62 @@ body{
   box-shadow: 0 0 8px #4fdfff;
   pointer-events: none;
   transition: transform 0.2s, box-shadow 0.1s;
+}
+
+#winScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.win-box {
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+  animation: popIn 0.4s ease;
+}
+
+.win-box h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.win-box button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.win-box button:hover {
+  transform: scale(1.1);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 @keyframes particleFade {
   to {
