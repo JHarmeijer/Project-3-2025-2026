@@ -1,16 +1,35 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loreScreen = document.getElementById("loreScreen");
   const startLevel1Btn = document.getElementById("startLevel1Btn");
+  const loreScreen1 = document.getElementById("loreScreen1");
+  const startLevel2Btn = document.getElementById("startLevel2Btn");
+  const loreScreen2 = document.getElementById("loreScreen2");
+  const startLevel3Btn = document.getElementById("startLevel3Btn");
 
   // Check of we op level 1 starten
   const selectedLevel = localStorage.getItem("selectedLevel");
   if (selectedLevel == "1") {
     loreScreen.classList.remove("hidden");
   }
-
   startLevel1Btn.addEventListener("click", () => {
     loreScreen.classList.add("hidden");
   });
+
+  const selectedLevel1 = localStorage.getItem("selectedLevel");
+  if (selectedLevel1 == "2") {
+    loreScreen1.classList.remove("hidden");
+  }
+  startLevel2Btn.addEventListener("click" , () => {
+    loreScreen1.classList.add("hidden");
+  })
+
+  const selectedLevel2 = localStorage.getItem("selectedLevel");
+  if(selectedLevel2 == "3") {
+    loreScreen2.classList.remove("hidden");
+  }
+  startLevel3Btn.addEventListener("click", () => {
+    loreScreen2.classList.add("hidden");
+  })
 });
 
 const loots = [];
@@ -44,7 +63,9 @@ const player = {
   canDash:true, alive: true, canMove: true
 };
 
-const endZone = {x:2800, y:0, w:100, h:360};
+let endZone = null;
+if(level !== level3){endZone = {x:2900, y:0, w:100, h:360};}
+
 const swordOffset = { x: 40, y: -10 };
 
 //----------INPUT---------
@@ -57,14 +78,35 @@ document.addEventListener("keydown", e => {if(e.key === "Escape") {if(!isPaused)
 //---------LORE ANIMATIE------
 const loreScreen = document.getElementById("loreScreen");
 const startLevel1Btn = document.getElementById("startLevel1Btn");
+const loreScreen1 = document.getElementById("loreScreen1");
+const startLevel2Btn = document.getElementById("startLevel2Btn");
+const loreScreen2 = document.getElementById("loreScreen2");
+const startLevel3Btn = document.getElementById("startLevel3Btn");
 
 function showLoreLevel1() {
   loreScreen.classList.remove("hidden");
   player.canMove = false;
 }
-
 startLevel1Btn.addEventListener("click", () => {
   loreScreen.classList.add("hidden");
+  player.canMove = true;
+});
+
+function showLoreLevel2() {
+  loreScreen1.classList.remove("hidden");
+  player.canMove = false;
+}
+startLevel2Btn.addEventListener("click", () => {
+  loreScreen1.classList.add("hidden");
+  player.canMove = true;
+});
+
+function showLoreLevel3() {
+  loreScreen2.classList.remove("hidden");
+  player.canMove = false;
+}
+startLevel3Btn.addEventListener("click", () => {
+  loreScreen2.classList.add("hidden");
   player.canMove = true;
 });
 
@@ -119,19 +161,18 @@ resumeBtn.addEventListener("click", () => {closePauseMenu();});
 leaveLevelBtn.addEventListener("click", () => {window.location.href = "levels.html";});
 
 //----------PLAYER MOVEMENT-----------
-function move() {
-  if(!player.canMove) return;
+function move(delta){
+    if(!player.canMove) return;
 
-  if (!player.dashing && player.canMove) {
-    if (keys["a"]) { player.x -= player.speedx; player.facing = -1; playerEl.style.transform = "scaleX(-1)"; }
-    if (keys["d"]) { player.x += player.speedx; player.facing = 1; playerEl.style.transform = "scaleX(1)"; }
-  }
+    if (!player.dashing && player.canMove == true) {
+        if (keys["a"]) { player.x -= player.speedx * delta; player.facing = -1; playerEl.style.transform = "scaleX(-1)"; }
+        if (keys["d"]) { player.x += player.speedx * delta; player.facing = 1; playerEl.style.transform = "scaleX(1)"; }
+    }
 
-  if (keys[" "] && !prevKeys[" "] && player.speedy === 0 && player.canMove) {
-    player.speedy = player.jumpPower;
-  }
+    if (keys[" "] && !prevKeys[" "] && player.speedy === 0 && player.canMove == true) {
+        player.speedy = player.jumpPower;
+    }
 }
-
 function dash() {
   if (!player.canDash || !player.alive) return;
   player.canDash = false;
@@ -163,7 +204,7 @@ function checkPlayerDeath(){
     player.alive = false;
     player.canMove = false;
     playerEl.style.display = "none";
-    endGame("Je bent overleden! 💀");
+    endGame("Je bent dood dood!");
   }
 }
 
@@ -227,15 +268,14 @@ function endGame(message) {
 }
 
 function isPlayerAtEnd() {
-  // Einde wordt bepaald door overlap van speler met endZone
-  return (
-    player.x + 40 > endZone.x &&
-    player.x < endZone.x + endZone.w &&
-    player.y + 40 > endZone.y &&
-    player.y < endZone.y + endZone.h
-  );
+  if(!endZone) return false; // Boss fight heeft geen endZone
+    return (
+        player.x + 40 > endZone.x &&
+        player.x < endZone.x + endZone.w &&
+        player.y + 40 > endZone.y &&
+        player.y < endZone.y + endZone.h
+    );
 }
-
 function goToMenu() {
   window.location.href = "levels.html";
 }
@@ -245,16 +285,17 @@ function restartLevel() {
 }
 
 function checkWinCondition() {
-  // Boss level → alleen boss kill nodig
-  const bossAlive = enemies.some(e => e.isBoss && e.alive);
-
-  if (!bossAlive && level === level3) {
-    endGame("Boss verslagen! ");
+  if(level === level3){ // Boss level
+      const bossAlive = enemies.some(e => e.isBoss && e.alive);
+      if(!bossAlive){
+          endGame("Boss verslagen! 🎉");
+      }
+      return;
   }
 
-  // Normale levels → alles killen + einde bereiken
-  if (areAllEnemiesDead() && isPlayerAtEnd() && level !== level3) {
-    endGame("Level gehaald!");
+    // Normale levels → alles killen + einde bereiken
+  if(areAllEnemiesDead() && isPlayerAtEnd()){
+      endGame("Level gehaald!");
   }
 }
 
@@ -262,16 +303,19 @@ function areAllEnemiesDead() {
   return enemies.every(enemy => !enemy.alive);
 }
 
-// ---------------- Update Loop ----------------
-function update(){
+// ---------------- UPDATE LOOP ----------------
+let lastTime = performance.now();
+function update(currentTime = performance.now()){
   if(isPaused == true){requestAnimationFrame(update); return;}
 
-  move();
-  enemyAI();
+  const delta = (currentTime - lastTime) / 8.333; //60fps
+  lastTime = currentTime;
+  move(delta);
+  enemyAI(delta);
 
   // Zwaartekracht
-  player.speedy += player.gravity;
-  player.y += player.speedy;
+  player.speedy += player.gravity * delta;
+  player.y += player.speedy * delta;
 
   // Borders
   keepPlayerInBounds();
@@ -286,7 +330,7 @@ function update(){
 
   Object.assign(prevKeys, keys);
 
-  if(player.dashing) player.x += player.dashVelocity;
+  if(player.dashing) player.x += player.dashVelocity * delta;
 
   requestAnimationFrame(update);
 }
