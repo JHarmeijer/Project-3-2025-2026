@@ -308,7 +308,7 @@ let lastTime = performance.now();
 function update(currentTime = performance.now()){
   if(isPaused == true){requestAnimationFrame(update); return;}
 
-  const delta = (currentTime - lastTime) / 8.333; //60fps
+  const delta = (currentTime - lastTime) / 8.333; //120fps
   lastTime = currentTime;
   move(delta);
   enemyAI(delta);
