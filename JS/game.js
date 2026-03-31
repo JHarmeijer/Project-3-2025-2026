@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   startLevel1Btn.addEventListener("click", () => {
     loreScreen.classList.add("hidden");
-    // Start level 1, hier kun je gewoon 'level1.html' laden of je game setup starten
-    // window.location.href = "level1.html"; 
-    // Als je hetzelfde index.html gebruikt, haal lore weg en start update loop
   });
 });
 
@@ -405,7 +402,7 @@ function checkHit() {
       swordRect.x < enemyRect.x + enemyRect.w && swordRect.x + swordRect.w > enemyRect.x &&
       swordRect.y < enemyRect.y + enemyRect.h && swordRect.y + swordRect.h > enemyRect.y
     ) {
-      // ✅ DAMAGE
+      // DAMAGE
       enemy.hp -= player.damage;
       spawnHit(enemy.x + 20, enemy.y + 20);
       if (enemy.hp <= 0) {
