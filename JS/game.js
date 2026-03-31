@@ -318,8 +318,8 @@ function enemyAI(){
         kaart.className='TheDeathScreen'
 
         kaart.innerHTML = `
-        <h1>je bent gestorven</h1>
-        <button><a href="../html/home.html">exit</a></button>
+        <h1 style="color:red;">L + bozo + you suck</h1>
+        <button><a style-"color:red;" href="../html/home.html">exit</a></button>
         `
         container.appendChild(kaart)
     }
