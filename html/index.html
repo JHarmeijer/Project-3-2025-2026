@@ -28,6 +28,19 @@
   </div>
 </div>
 
+<div id="pauseMenu" class="hidden">
+  <div class="pause-box">
+    <h1>Pause</h1>
+    <button id="resumeBtn">Verder Spelen</button>
+    <button id="leaveLevelBtn">Level Verlaten</button>
+
+    <div class="slider-container">
+      <label for="volumeSlider">Volume: <span id="volumeValue">50</span>%</label>
+      <input type="range" min="0" max="100" value="50" id="volumeSlider">
+    </div>
+  </div>
+</div>
+
 <!--  WINSCREEN HIER NAAR BUITEN -->
 <div id="winScreen" class="hidden">
   <div class="win-box">
@@ -37,9 +50,10 @@
   </div>
 </div>
   <!-- Background muziek -->
-  <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
+<audio id="bgMusic" src="../Assets/SoundHelix-Song-1.mp3" loop autoplay></audio>
 
   <script src="../JS/world.js"></script>
   <script src="../JS/game.js"></script>
+  <script src="/JS/UI.js"></script>
 </body>
 </html>

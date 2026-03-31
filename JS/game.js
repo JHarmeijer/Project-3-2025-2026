@@ -1,19 +1,19 @@
-// Achtergrondmuziek aanmaken
-const bgMusic = new Audio('../Assets/SoundHelix-Song-1.mp3'); // pad naar je muziekbestand
-bgMusic.loop = true;
+document.addEventListener("DOMContentLoaded", () => {
+  const loreScreen = document.getElementById("loreScreen");
+  const startLevel1Btn = document.getElementById("startLevel1Btn");
 
-// Laad volume uit localStorage of default 0.5
-const savedVolume = localStorage.getItem("gameVolume");
-bgMusic.volume = savedVolume !== null ? savedVolume / 100 : 0.5;
-
-// Start muziek automatisch
-bgMusic.play().catch(e => console.log("Autoplay blocked, klik ergens om te starten"));
-
-// Optioneel: update volume dynamisch bij aanpassing
-window.addEventListener("storage", (e) => {
-  if(e.key === "gameVolume"){
-    bgMusic.volume = e.newValue / 100;
+  // Check of we op level 1 starten
+  const selectedLevel = localStorage.getItem("selectedLevel");
+  if (selectedLevel == "1") {
+    loreScreen.classList.remove("hidden");
   }
+
+  startLevel1Btn.addEventListener("click", () => {
+    loreScreen.classList.add("hidden");
+    // Start level 1, hier kun je gewoon 'level1.html' laden of je game setup starten
+    // window.location.href = "level1.html"; 
+    // Als je hetzelfde index.html gebruikt, haal lore weg en start update loop
+  });
 });
 
 const loots = [];
@@ -21,8 +21,6 @@ const world = document.getElementById("world")
 const playerEl = document.getElementById("player");
 const enemyEl = document.getElementById("enemy");
 const swordEl = document.getElementById("sword");
-const playerHPText = document.getElementById("playerHP");
-const enemyHPText = document.getElementById("enemyHP");
 const platformsEl = document.getElementById("platforms");
 
 const keys = {};
@@ -33,6 +31,13 @@ const platforms = [];
 const enemies = [];
 const camera = {x: 0, y: 0};
 let gameEnded = false;
+
+//---------UI----------
+const playerHPText = document.getElementById("playerHP");
+const pauseMenu = document.getElementById("pauseMenu");
+const resumeBtn = document.getElementById("resumeBtn");
+const leaveLevelBtn = document.getElementById("leaveLevelBtn");
+let isPaused = false;
 
 //----------PLAYER--------
 const player = {
@@ -50,6 +55,7 @@ document.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
 document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
 document.addEventListener("mousedown", e=>{ if(e.button === 0){attack();}});
 document.addEventListener("keydown", e =>{if(e.key === "Shift"){dash();}});
+document.addEventListener("keydown", e => {if(e.key === "Escape") {if(!isPaused) openPauseMenu();else closePauseMenu();}});
 
 //---------LORE ANIMATIE------
 const loreScreen = document.getElementById("loreScreen");
@@ -100,16 +106,32 @@ function spawnPlatforms() {
     platforms.push(p);
   });
 }
+//----------UI INPUTS------------
+function openPauseMenu() {
+  pauseMenu.classList.remove("hidden");
+  isPaused = true;
+  player.canMove = false;
+}
+
+function closePauseMenu() {
+  pauseMenu.classList.add("hidden");
+  isPaused = false;
+  player.canMove = true;
+}
+resumeBtn.addEventListener("click", () => {closePauseMenu();});
+leaveLevelBtn.addEventListener("click", () => {window.location.href = "levels.html";});
 
 //----------PLAYER MOVEMENT-----------
 function move() {
   if(!player.canMove) return;
 
-  if(keys[" "] && !prevKeys[" "] && player.speedy===0) player.speedy = player.jumpPower;
+  if (!player.dashing && player.canMove) {
+    if (keys["a"]) { player.x -= player.speedx; player.facing = -1; playerEl.style.transform = "scaleX(-1)"; }
+    if (keys["d"]) { player.x += player.speedx; player.facing = 1; playerEl.style.transform = "scaleX(1)"; }
+  }
 
-  if(!player.dashing){
-    if(keys["a"]){ player.x -= player.speedx; player.facing=-1; playerEl.style.transform="scaleX(-1)"; }
-    if(keys["d"]){ player.x += player.speedx; player.facing=1; playerEl.style.transform="scaleX(1)"; }
+  if (keys[" "] && !prevKeys[" "] && player.speedy === 0 && player.canMove) {
+    player.speedy = player.jumpPower;
   }
 }
 
@@ -242,8 +264,11 @@ function checkWinCondition() {
 function areAllEnemiesDead() {
   return enemies.every(enemy => !enemy.alive);
 }
+
 // ---------------- Update Loop ----------------
 function update(){
+  if(isPaused == true){requestAnimationFrame(update); return;}
+
   move();
   enemyAI();
 
@@ -268,13 +293,13 @@ function update(){
 
   requestAnimationFrame(update);
 }
+
 //--------CAMERA & LOOT-------
 function updateCamera(){
     camera.x = player.x - window.innerWidth/2;
     camera.y = player.y - window.innerHeight/2;
     world.style.transform = `translate(${-camera.x}px,${-camera.y}px)`;
 }
-
 
 //----------LOOT------------
 function spawnLoot(x, y) {
