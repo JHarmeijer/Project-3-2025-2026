@@ -63,6 +63,12 @@ const player = {
   alive: true
 };
 
+const endZone = {
+  x: 2800, // pas aan naar jouw map
+  y: 0,
+  w: 200,
+  h: 500
+};
 
 
 const swordOffset = { x: 40, y: -10 };
@@ -329,6 +335,10 @@ function spawnLoot(x, y) {
   }
 }
 
+function areAllEnemiesDead() {
+  return enemies.every(enemy => !enemy.alive);
+}
+
 
 function move() {
   if (keys[" "] && !prevKeys[" "] && player.speedy === 0) {
@@ -347,6 +357,15 @@ function move() {
       playerEl.style.transform = "scaleX(1)";
     }
   }
+}
+
+function isPlayerAtEnd() {
+  return (
+    player.x < endZone.x + endZone.w &&
+    player.x + 40 > endZone.x &&
+    player.y < endZone.y + endZone.h &&
+    player.y + 40 > endZone.y
+  );
 }
 
 function enemyAI(){
@@ -443,12 +462,34 @@ function updateLoot() {
   }
 }
 
+function endGame(message) {
+  alert(message);
+
+  // terug naar level menu
+  window.location.href = "levels.html";
+}
+
+function checkWinCondition() {
+  // Boss level → alleen boss kill nodig
+  const bossAlive = enemies.some(e => e.isBoss && e.alive);
+
+  if (!bossAlive && level === level3) {
+    endGame("Boss verslagen! 🎉");
+  }
+
+  // Normale levels → alles killen + einde bereiken
+  if (areAllEnemiesDead() && isPlayerAtEnd() && level !== level3) {
+    endGame("Level gehaald! 🎉");
+  }
+}
+
 function update(){
 
   move();
   enemyAI();
   updateCamera()
   updateLoot();
+  checkWinCondition();
 
   playerEl.style.left = player.x + "px";
   playerEl.style.top = player.y + "px";
@@ -469,6 +510,8 @@ function update(){
   if (player.dashing) {
     player.x += player.dashVelocity;
   }
+
+
   
 
   requestAnimationFrame(update);

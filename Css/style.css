@@ -40,6 +40,16 @@ body{
     background: #38d4ff;
 }
 
+#end {
+  position: absolute;
+  left: 2800px;
+  top: 0;
+  width: 200px;
+  height: 500px;
+  background: gold;
+  opacity: 0.5;
+}
+
 .hit{
     position: absolute;
     width: 20px;

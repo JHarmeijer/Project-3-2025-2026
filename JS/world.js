@@ -33,7 +33,7 @@ const level3 = {
   ],
   enemies:[
     {x:350, y:320},{x:650, y:280},{x:950, y:240},{x:1250, y:180},
-    {x:1700, y:260, hp:500, isBoss:true} // Boss
+    {x:1700, y:260, hp:100, isBoss:true} // Boss
   ]
 };
 
