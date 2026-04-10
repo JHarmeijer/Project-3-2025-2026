@@ -221,7 +221,10 @@ function enemyAI(){
     }
 
     const distToPlayer = Math.sqrt((player.x-enemy.x)**2 + (player.y-enemy.y)**2);
-    if(distToPlayer<40){
+    
+    // Aangepast: boss heeft grotere aanvalsafstand
+    const bossRange = enemy.isBoss ? 100 : 40;
+    if(distToPlayer < bossRange){
       player.hp -= enemy.isBoss?0.3:0.1;
       playerHPText.textContent=Math.floor(player.hp);
       checkPlayerDeath();
