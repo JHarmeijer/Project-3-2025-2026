@@ -222,7 +222,7 @@ function enemyAI(){
 
     const distToPlayer = Math.sqrt((player.x-enemy.x)**2 + (player.y-enemy.y)**2);
     
-    // Aangepast: boss heeft grotere aanvalsafstand
+    // Hitbox van de boss
     const bossRange = enemy.isBoss ? 100 : 40;
     if(distToPlayer < bossRange){
       player.hp -= enemy.isBoss?0.3:0.1;
@@ -291,7 +291,7 @@ function checkWinCondition() {
   if(level === level3){ // Boss level
       const bossAlive = enemies.some(e => e.isBoss && e.alive);
       if(!bossAlive){
-          endGame("Boss verslagen! 🎉");
+          endGame("Boss verslagen!");
       }
       return;
   }
