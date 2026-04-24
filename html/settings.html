@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Sigma Spectre</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h1 {
+      margin-bottom: 3rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    }
+    .slider-container {
+      width: 300px;
+      margin-bottom: 2rem;
+    }
+    .slider-label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    input[type=range] {
+      width: 100%;
+    }
+    button {
+      width: 200px;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Settings</h1>
+
+    <div class="slider-container">
+      <label for="volumeSlider">Volume: <span id="volumeValue">50</span>%</label>
+      <input type="range" min="0" max="100" value="50" id="volumeSlider">
+    </div>
+
+  <button class="btn btn-primary" onclick="goBack()">Back to Start</button>
+
+  <script>
+    function goBack(){
+      window.location.href = "menu.html";
+    }
+  </script>
+  <audio id="bgMusic" src="../Assets/SoundHelix-Song-1.mp3" loop></audio>
+  <script src="/JS/UI.js"></script>
+</body>
+</html>

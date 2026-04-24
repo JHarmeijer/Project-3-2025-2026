@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Menu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h1 { margin-bottom: 3rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.5); }
+    .level-card {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    .level-card:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+<body>
+  <h1>Kies een Level</h1>
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-8 col-md-4">
+        <div class="level-card" onclick="startLevel(1)">
+          <div class="level-title">Level 1 <br> Het Bos van Casper</div>
+        </div>
+      </div>
+      <div class="col-8 col-md-4">
+        <div class="level-card" onclick="startLevel(2)">
+          <div class="level-title">Level 2 <br> Dieper in de Schaduwen</div>
+        </div>
+      </div>
+      <div class="col-8 col-md-4">
+        <div class="level-card" onclick="startLevel(3)">
+          <div class="level-title">Level 3(Boss) <br> Het Kasteel van Sigma</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terug knop -->
+    <div class="row mt-5 justify-content-center">
+      <div class="col-12 text-center">
+        <a href="menu.html" class="btn btn-dark btn-lg">
+          ⬅ Terug naar menu
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function startLevel(level){
+      localStorage.setItem('selectedLevel', level);
+      window.location.href = 'index.html';
+    }
+  </script>
+  <audio id="bgMusic" src="../Assets/SoundHelix-Song-1.mp3" loop autoplay></audio>
+  <script src="/JS/UI.js"></script>
+</body>
+</html>

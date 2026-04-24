@@ -1,26 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-<title>Mini Attack Game</title>
-<link rel="stylesheet" href="../Css/style.css"> 
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sigma Spectre - Game</title>
+  <link rel="stylesheet" href="../Css/style.css">
 </head>
-
 <body>
-    <div id="ui">
-        Aura: <span id="playerHP">100</span><br>
-        Enemy HP: <span id="enemyHP">50</span>
-    </div>
-    <div id="world">
-        <div id="player" class="player"></div>
-        <div id="enemy" class="enemy"></div>
-        <div id="sword" class="sword" style="display:none;">
-            <img src="../Assets/Sword-pixel.png" class="sword">
-        </div>
-        <div id="platforms"></div>
-    </div>
-<!-- Link to JS file -->
-<script src="../JS/game.js"></script>
+  <div id="ui">
+    Aura: <span id="playerHP">100</span>
+  </div>
 
+<div id="world">
+  <div id="player" class="player"></div>
+  <div>
+    <img id="sword" class="sword" style="display: none;" src="../Assets/Sword-pixel.png">
+  </div>
+  <div id="platforms"></div>
+  <div id="end"></div>
+</div>
+
+<div id="loreScreen" class="hidden">
+  <div class="lore-box">
+    <h1>Het Bos van Casper</h1>
+    <p>
+      Het rustige bos wordt bedreigd. Mensen zijn gevangen door Sigma Spectre's invloed. Casper moet zijn eerste stappen zetten om ze te bevrijden.
+    </p>
+    <button id="startLevel1Btn">Start Level 1</button>
+  </div>
+</div>
+<div id="loreScreen1" class="hidden">
+  <div class="lore-box">
+    <h1>Dieper in de Schaduwen</h1>
+    <p>
+      Het bos wordt donkerder en gevaarlijker. Meer mensen zijn in de macht van Sigma, en de gevaren nemen toe. Casper moet slim zijn en zijn vaardigheden gebruiken.
+    </p>
+    <button id="startLevel2Btn">Start Level 2</button>
+  </div>
+</div>
+<div id="loreScreen2" class="hidden">
+  <div class="lore-box">
+    <h1>Het Kasteel van Sigma</h1>
+    <p>
+      Casper bereikt het kasteel waar Sigma Spectre zijn macht verzamelt. Dit is de ultieme confrontatie – de zielen van de mensen hangen van hem af.
+    </p>
+    <button id="startLevel3Btn">Start Level 3</button>
+  </div>
+</div>
+<div id="pauseMenu" class="hidden">
+  <div class="pause-box">
+    <h1>Pause</h1>
+    <button id="resumeBtn">Verder Spelen</button>
+    <button id="leaveLevelBtn">Level Verlaten</button>
+
+    <div class="slider-container">
+      <label for="volumeSlider">Volume: <span id="volumeValue">50</span>%</label>
+      <input type="range" min="0" max="100" value="50" id="volumeSlider">
+    </div>
+  </div>
+</div>
+
+<!--  WINSCREEN HIER NAAR BUITEN -->
+<div id="winScreen" class="hidden">
+  <div class="win-box">
+    <h1 id="winText">You Win!</h1>
+    <button onclick="goToMenu()">Terug naar menu</button>
+    <button onclick="restartLevel()">Opnieuw spelen</button>
+  </div>
+</div>
+  <!-- Background muziek -->
+<audio id="bgMusic" src="../Assets/SoundHelix-Song-1.mp3" loop autoplay></audio>
+
+  <script src="../JS/world.js"></script>
+  <script src="../JS/game.js"></script>
+  <script src="/JS/UI.js"></script>
 </body>
 </html>
